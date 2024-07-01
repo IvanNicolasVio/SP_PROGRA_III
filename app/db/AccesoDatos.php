@@ -1,40 +1,44 @@
 <?php
+
 class AccesoDatos
 {
-    private static $objAccesoDatos;
+    private static $ObjetoAccesoDatos;
     private $objetoPDO;
-
+ 
     private function __construct()
     {
-        try {
-            $this->objetoPDO = new PDO('mysql:host='.$_ENV['MYSQL_HOST'].';dbname='.$_ENV['MYSQL_DB'].';charset=utf8', $_ENV['MYSQL_USER'], $_ENV['MYSQL_PASS'], array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        try { 
+            $this->objetoPDO = new PDO('mysql:host=localhost:3306;dbname=tienda;charset=utf8', 'root', '', array(PDO::ATTR_EMULATE_PREPARES => false,PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             $this->objetoPDO->exec("SET CHARACTER SET utf8");
-        } catch (PDOException $e) {
-            print "Error: " . $e->getMessage();
+            } 
+        catch (PDOException $e) { 
+            print "Error!: " . $e->getMessage(); 
             die();
         }
     }
-
-    public static function obtenerInstancia()
-    {
-        if (!isset(self::$objAccesoDatos)) {
-            self::$objAccesoDatos = new AccesoDatos();
-        }
-        return self::$objAccesoDatos;
+ 
+    public function RetornarConsulta($sql)
+    { 
+        return $this->objetoPDO->prepare($sql); 
     }
 
-    public function prepararConsulta($sql)
-    {
-        return $this->objetoPDO->prepare($sql);
+     public function RetornarUltimoIdInsertado()
+    { 
+        return $this->objetoPDO->lastInsertId(); 
     }
-
-    public function obtenerUltimoId()
-    {
-        return $this->objetoPDO->lastInsertId();
+ 
+    public static function dameUnObjetoAcceso()
+    { 
+        if (!isset(self::$ObjetoAccesoDatos)) {          
+            self::$ObjetoAccesoDatos = new AccesoDatos(); 
+        } 
+        return self::$ObjetoAccesoDatos;        
     }
-
+ 
+     // Evita que el objeto se pueda clonar
     public function __clone()
-    {
-        trigger_error('ERROR: La clonación de este objeto no está permitida', E_USER_ERROR);
+    { 
+        trigger_error('La clonación de este objeto no está permitida', E_USER_ERROR); 
     }
 }
+?>
