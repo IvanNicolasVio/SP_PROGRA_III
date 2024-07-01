@@ -140,5 +140,29 @@ class Venta
         }
     }
 
+    public static function ConsultarVentasPorId($id){
+        $objAccesoDatos = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objAccesoDatos->RetornarConsulta("SELECT * FROM ventas WHERE id = ?");
+        $consulta->bindValue(1, $id);
+        $consulta->execute();
+        $dispositivo = $consulta->fetch(PDO::FETCH_ASSOC);
+        if ($dispositivo) {
+            return $dispositivo;
+        } else {
+            return false;
+        }
+    }
 
+    public static function ModificarVenta($id,$email,$nombre,$tipo,$marca,$stock){
+        $objAccesoDatos = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objAccesoDatos->RetornarConsulta("UPDATE ventas SET email = :email, nombre_disp = :nombre, tipo = :tipo,marca = :marca, stock = :stock  WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->bindValue(':email', $email, PDO::PARAM_STR);
+        $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+        $consulta->bindValue(':tipo', $tipo, PDO::PARAM_STR);
+        $consulta->bindValue(':marca', $marca, PDO::PARAM_STR);
+        $consulta->bindValue(':stock', $stock, PDO::PARAM_INT);
+        $consulta->execute();
+        return $objAccesoDatos->RetornarUltimoIdInsertado();
+    }
 }

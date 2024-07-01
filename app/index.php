@@ -16,6 +16,7 @@ require_once '../app/middlewares/issetMW.php';
 require_once '../app/middlewares/CheckTipoMW.php';
 require_once '../app/middlewares/CheckFechaMW.php';
 require_once '../app/middlewares/CheckValoresMW.php';
+require_once '../app/middlewares/CheckNumMW.php';
 
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -27,6 +28,8 @@ $app->addBodyParsingMiddleware();
 $app->group('/tienda', function (RouteCollectorProxy $group) {
   $group->post('/alta', \DispositivoController::class . ':CargarUno')
   ->add(new CheckTipoMW())
+  ->add(new CheckNumMW('precio'))
+  ->add(new CheckNumMW('stock'))
   ->add(new issetMW('dispositivo'));
   $group->post('/consultar', \DispositivoController::class . ':ConsultarDispositivo')
   ->add(new CheckTipoMW())
@@ -36,7 +39,13 @@ $app->group('/tienda', function (RouteCollectorProxy $group) {
 $app->group('/ventas', function (RouteCollectorProxy $group) {
   $group->post('/alta', \VentaController::class . ':Vender')
   ->add(new CheckTipoMW())
+  ->add(new CheckNumMW('stock'))
   ->add(new issetMW('venta'));
+  $group->put('/modificar', \VentaController::class . ':modificarVenta')
+  ->add(new CheckTipoMW())
+  ->add(new CheckNumMW('stock'))
+  ->add(new CheckNumMW('id'))
+  ->add(new issetMW('modificar'));
 });
 
 $app->group('/ventas/consultar', function (RouteCollectorProxy $group) {

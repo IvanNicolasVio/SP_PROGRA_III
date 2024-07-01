@@ -116,4 +116,22 @@ class VentaController
         }
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public function modificarVenta($request, $response, $args){
+        $parametros = $request->getQueryParams();
+        $id = $parametros['id'];
+        $email = $parametros['email'];
+        $nombre_disp = $parametros['nombre'];
+        $tipo = $parametros['tipo'];
+        $marca = $parametros['marca'];
+        $stock = $parametros['stock'];
+        $producto = Venta::ConsultarVentasPorId($id);
+        if($producto){
+            Venta::ModificarVenta($id,$email,$nombre_disp,$tipo,$marca,$stock);
+            $response->getBody()->write(json_encode(array('Status'=>'Se actualizo la venta N ' . $id)));
+        }else{
+            $response->getBody()->write(json_encode(array('Status'=>'No existe esa venta')));
+        }
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 }
