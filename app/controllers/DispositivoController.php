@@ -62,4 +62,51 @@ class DispositivoController
             return $response->withHeader('Content-Type', 'application/json');
         }
     }
+
+    public function CargarMuchos($request, $response, $args)
+{
+    $parametros = $request->getUploadedFiles();
+    $archivoCsv = $parametros['csv'];
+
+    if ($archivoCsv->getError() === UPLOAD_ERR_OK) {
+        $filename = $archivoCsv->getClientFilename();
+        $uploadDir = __DIR__ . '/../archivos/';
+        $archivoCsv->moveTo($uploadDir . $filename);
+        $file = fopen($uploadDir . $filename, 'r');
+        $result = [];
+        while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
+            $nombre = $data[0];
+            $precio = $data[1];
+            $tipo = $data[2];
+            $marca = $data[3];
+            $stock = $data[4];
+            $foto = isset($data[5]) ? $data[5] : false;
+            if ($tipo != "Tablet" && $tipo != "Smartphone") {
+                $result[] = array('Status' => 'Tipo de dispositivo no válido para ' . $nombre . ', no sera cargado.');
+                continue; 
+            }
+            if (!filter_var($precio, FILTER_VALIDATE_INT) || !filter_var($stock, FILTER_VALIDATE_INT)) {
+                $result[] = array('Status' => 'Precio o stock no válidos para ' . $nombre . ', no sera cargado.');
+                continue;
+            }
+            $dispositivo = Dispositivo::CheckYaCreado($nombre, $marca, $tipo);
+            if ($dispositivo) {
+                $id = $dispositivo[0]['id'];
+                $nombre = $dispositivo[0]['nombre'];
+                Dispositivo::ActualizarDispositivo($id, $precio, $stock);
+                $result[] = array('Status' => $nombre . ' actualizado con exito!');
+            } else {
+                $dispo = new Dispositivo($nombre, $precio, $tipo, $marca, $stock);
+                $ultimoId = $dispo->crearDispositivo();
+                $result[] = array('Status' => $dispo->nombre . ' dado de alta con exito!');
+            }
+        }
+        fclose($file);
+        $response->getBody()->write(json_encode($result));
+    } else {
+        $response->getBody()->write(json_encode(array('Status' => 'Error al subir el archivo')));
+    }
+
+    return $response->withHeader('Content-Type', 'application/json');
+}
 }

@@ -31,6 +31,8 @@ $app->group('/tienda', function (RouteCollectorProxy $group) {
   ->add(new CheckNumMW('precio'))
   ->add(new CheckNumMW('stock'))
   ->add(new issetMW('dispositivo'));
+  $group->post('/altaCSV', \DispositivoController::class . ':CargarMuchos');
+
   $group->post('/consultar', \DispositivoController::class . ':ConsultarDispositivo')
   ->add(new CheckTipoMW())
   ->add(new issetMW('consulta'));
