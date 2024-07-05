@@ -64,49 +64,70 @@ class DispositivoController
     }
 
     public function CargarMuchos($request, $response, $args)
-{
-    $parametros = $request->getUploadedFiles();
-    $archivoCsv = $parametros['csv'];
-
-    if ($archivoCsv->getError() === UPLOAD_ERR_OK) {
-        $filename = $archivoCsv->getClientFilename();
-        $uploadDir = __DIR__ . '/../archivos/';
-        $archivoCsv->moveTo($uploadDir . $filename);
-        $file = fopen($uploadDir . $filename, 'r');
-        $result = [];
-        while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
-            $nombre = $data[0];
-            $precio = $data[1];
-            $tipo = $data[2];
-            $marca = $data[3];
-            $stock = $data[4];
-            $foto = isset($data[5]) ? $data[5] : false;
-            if ($tipo != "Tablet" && $tipo != "Smartphone") {
-                $result[] = array('Status' => 'Tipo de dispositivo no válido para ' . $nombre . ', no sera cargado.');
-                continue; 
+    {
+        $parametros = $request->getUploadedFiles();
+        $archivoCsv = $parametros['csv'];
+        if ($archivoCsv->getError() === UPLOAD_ERR_OK) {
+            $filename = $archivoCsv->getClientFilename();
+            $uploadDir = __DIR__ . '/../archivos/';
+            $archivoCsv->moveTo($uploadDir . $filename);
+            $file = fopen($uploadDir . $filename, 'r');
+            $result = [];
+            while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
+                $nombre = $data[0];
+                $precio = $data[1];
+                $tipo = $data[2];
+                $marca = $data[3];
+                $stock = $data[4];
+                $foto = isset($data[5]) ? $data[5] : false;
+                if ($tipo != "Tablet" && $tipo != "Smartphone") {
+                    $result[] = array('Status' => 'Tipo de dispositivo no válido para ' . $nombre . ', no sera cargado.');
+                    continue; 
+                }
+                if (!filter_var($precio, FILTER_VALIDATE_INT) || !filter_var($stock, FILTER_VALIDATE_INT)) {
+                    $result[] = array('Status' => 'Precio o stock no válidos para ' . $nombre . ', no sera cargado.');
+                    continue;
+                }
+                $dispositivo = Dispositivo::CheckYaCreado($nombre, $marca, $tipo);
+                if ($dispositivo) {
+                    $id = $dispositivo[0]['id'];
+                    $nombre = $dispositivo[0]['nombre'];
+                    Dispositivo::ActualizarDispositivo($id, $precio, $stock);
+                    $result[] = array('Status' => $nombre . ' actualizado con exito!');
+                } else {
+                    $dispo = new Dispositivo($nombre, $precio, $tipo, $marca, $stock);
+                    $ultimoId = $dispo->crearDispositivo();
+                    $result[] = array('Status' => $dispo->nombre . ' dado de alta con exito!');
+                }
             }
-            if (!filter_var($precio, FILTER_VALIDATE_INT) || !filter_var($stock, FILTER_VALIDATE_INT)) {
-                $result[] = array('Status' => 'Precio o stock no válidos para ' . $nombre . ', no sera cargado.');
-                continue;
-            }
-            $dispositivo = Dispositivo::CheckYaCreado($nombre, $marca, $tipo);
-            if ($dispositivo) {
-                $id = $dispositivo[0]['id'];
-                $nombre = $dispositivo[0]['nombre'];
-                Dispositivo::ActualizarDispositivo($id, $precio, $stock);
-                $result[] = array('Status' => $nombre . ' actualizado con exito!');
-            } else {
-                $dispo = new Dispositivo($nombre, $precio, $tipo, $marca, $stock);
-                $ultimoId = $dispo->crearDispositivo();
-                $result[] = array('Status' => $dispo->nombre . ' dado de alta con exito!');
-            }
+            fclose($file);
+            $response->getBody()->write(json_encode($result));
+        } else {
+            $response->getBody()->write(json_encode(array('Status' => 'Error al subir el archivo')));
         }
-        fclose($file);
-        $response->getBody()->write(json_encode($result));
-    } else {
-        $response->getBody()->write(json_encode(array('Status' => 'Error al subir el archivo')));
+        return $response->withHeader('Content-Type', 'application/json');
     }
 
-    return $response->withHeader('Content-Type', 'application/json');
-}
+    public function DescargarMuchos($request, $response, $args){
+        $dispositivos = Dispositivo::TraerTodos();
+        if($dispositivos){
+            $filename = "dispositivos.csv";
+            $file = fopen('php://memory', 'w');
+            fputcsv($file, ['nombre', 'precio', 'tipo', 'marca', 'stock', 'ruta_foto']);
+            foreach ($dispositivos as $dispositivo) {
+                unset($dispositivo['id']);
+                fputcsv($file, $dispositivo);
+
+            }
+            fseek($file, 0);
+            $response = $response->withHeader('Content-Type', 'text/csv')
+                                    ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            $response->getBody()->write(stream_get_contents($file));
+            fclose($file);
+        }else {
+            $response->getBody()->write(json_encode(array('Status' => 'No existen dispositivos')));
+            $response->withStatus(404);
+        }   
+        return $response;
+    }
 }

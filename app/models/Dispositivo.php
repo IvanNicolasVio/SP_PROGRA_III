@@ -84,4 +84,16 @@ class Dispositivo
         $consulta->execute();
         return $objAccesoDatos->RetornarUltimoIdInsertado();
     }
+
+    public static function TraerTodos(){
+        $objAccesoDatos = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objAccesoDatos->RetornarConsulta("SELECT * FROM dispositivos");
+        $consulta->execute();
+        $dispositivos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        if ($dispositivos) {
+            return $dispositivos;
+        } else {
+            return false;
+        }
+    }
 }
