@@ -2,9 +2,13 @@
 require_once './models/Dispositivo.php';
 require_once './controllers/ImagenController.php';
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
+
 class DispositivoController
 {
-    public function CargarUno($request, $response, $args)
+    public function CargarUno(Request $request, Response $response, $args)
     {
         $parametros = $request->getParsedBody();
         $nombre = $parametros['nombre'];
@@ -31,7 +35,7 @@ class DispositivoController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function ConsultarDispositivo($request, $response, $args){
+    public function ConsultarDispositivo(Request $request, Response $response, $args){
         $parametros = $request->getParsedBody();
         $nombre = $parametros['nombre'];
         $tipo = $parametros['tipo'];
@@ -63,7 +67,7 @@ class DispositivoController
         }
     }
 
-    public function CargarMuchos($request, $response, $args)
+    public function CargarMuchos(Request $request, Response $response, $args)
     {
         $parametros = $request->getUploadedFiles();
         $archivoCsv = $parametros['csv'];
@@ -108,7 +112,7 @@ class DispositivoController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function DescargarMuchos($request, $response, $args){
+    public function DescargarMuchos(Request $request, Response $response, $args){
         $dispositivos = Dispositivo::TraerTodos();
         if($dispositivos){
             $filename = "dispositivos.csv";

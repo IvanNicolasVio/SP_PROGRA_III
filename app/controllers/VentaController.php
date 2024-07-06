@@ -4,9 +4,13 @@ require_once './models/Dispositivo.php';
 require_once './controllers/ImagenController.php';
 include_once './models/ControlTiempo.php';
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
+
 class VentaController
 {
-    public function Vender($request, $response, $args)
+    public function Vender(Request $request, Response $response, $args)
     {
         $parametros = $request->getParsedBody();
         $email = $parametros['email'];
@@ -32,7 +36,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerPorFecha($request, $response, $args){
+    public function TraerPorFecha(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         if(!$parametros){
             $fecha = Fecha::DarFechaAyer();
@@ -48,7 +52,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerPorEmail($request, $response, $args){
+    public function TraerPorEmail(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         $email = $parametros['email'];
         $ventas = Venta::ConsultarVentasPorUsuario($email);
@@ -60,7 +64,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerPorTipo($request, $response, $args){
+    public function TraerPorTipo(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         $tipo = $parametros['tipo'];
         $ventas = Venta::ConsultarVentasPorTipo($tipo);
@@ -72,7 +76,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerPorValor($request, $response, $args){
+    public function TraerPorValor(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         $valorUno = $parametros['valorUno'];
         $valorDos = $parametros['valorDos'];
@@ -85,7 +89,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerPorPrecioFinal($request, $response, $args){
+    public function TraerPorPrecioFinal(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         if(!$parametros){
             $resultado = Venta::ConsultarPrecioTotal();
@@ -107,7 +111,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function TraerDispMasVendido($request, $response, $args){
+    public function TraerDispMasVendido(Request $request, Response $response, $args){
         $producto = Venta::ConsultarProductoMasVendido();
         if($producto){
             $response->getBody()->write(json_encode(array('Producto mas vendido'=>$producto['nombre_disp'] . ' cantidad ' . $producto['cantidad_vendida'])));
@@ -117,7 +121,7 @@ class VentaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function modificarVenta($request, $response, $args){
+    public function modificarVenta(Request $request, Response $response, $args){
         $parametros = $request->getQueryParams();
         $id = $parametros['id'];
         $email = $parametros['email'];
@@ -133,5 +137,28 @@ class VentaController
             $response->getBody()->write(json_encode(array('Status'=>'No existe esa venta')));
         }
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+
+    public function Descargar(Request $request, Response $response, $args){
+        $ventas = Venta::TraerTodas();
+        if($ventas){
+            $filename = "ventas.csv";
+            $file = fopen('php://memory', 'w');
+            fputcsv($file, ['email', 'nombre_disp', 'tipo', 'marca', 'stock', 'fecha', 'precio_total', 'ruta_foto']);
+            foreach ($ventas as $venta) {
+                unset($venta['id']);
+                fputcsv($file, $venta);
+            }
+            fseek($file, 0);
+            $response = $response->withHeader('Content-Type', 'text/csv')
+                                    ->withHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            $response->getBody()->write(stream_get_contents($file));
+            fclose($file);
+        }else {
+            $response->getBody()->write(json_encode(array('Status' => 'No existen ventas')));
+            $response->withStatus(404);
+        }   
+        return $response;
     }
 }

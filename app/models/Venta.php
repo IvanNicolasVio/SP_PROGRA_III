@@ -165,4 +165,16 @@ class Venta
         $consulta->execute();
         return $objAccesoDatos->RetornarUltimoIdInsertado();
     }
+
+    public static function TraerTodas(){
+        $objAccesoDatos = AccesoDatos::dameUnObjetoAcceso();
+        $consulta = $objAccesoDatos->RetornarConsulta("SELECT * FROM ventas");
+        $consulta->execute();
+        $dispositivos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+        if ($dispositivos) {
+            return $dispositivos;
+        } else {
+            return false;
+        }
+    }
 }
