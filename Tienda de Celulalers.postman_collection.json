@@ -1,0 +1,855 @@
+{
+	"info": {
+		"_postman_id": "d48ef12f-c53d-4113-9a55-197aff1d1237",
+		"name": "Tienda de Celulalers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29666629"
+	},
+	"item": [
+		{
+			"name": "Cargar alta",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyMjU0OTcsImV4cCI6MTcyMDI4NTQ5NywiYXVkIjoiNzliNTcyNTM3ZTkwNzA3Mzk0NTBkMzc2MTU5ODM4NTY0YzUwM2IzZSIsImRhdGEiOnsiaWQiOjMsIm1haWwiOiJ2aW9pdmFuQGhvdG1haWwuY29tIiwidXN1YXJpbyI6Iml2YW4iLCJjb250cmFzZW5pYSI6IjEyMzQiLCJwZXJmaWwiOiJhZG1pbiIsImZvdG8iOiIuXC9JbWFnZW5lc0RlVXN1YXJpb3NcLzIwMjRcL2l2YW5fYWRtaW5fMjAyNC0wNy0wNWpwZyIsImZlY2hhX2RlX2FsdGEiOiIyMDI0LTA3LTA1IiwiZmVjaGFfZGVfYmFqYSI6bnVsbH0sImFwcCI6IkNvbWFuZGEifQ.RUh8jfZZlVFLctNu25jST90zVxKiO8t0gMgK96cPZ6s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "1500",
+							"type": "text"
+						},
+						{
+							"key": "precio",
+							"value": "50000",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "Smartphone",
+							"type": "text"
+						},
+						{
+							"key": "marca",
+							"value": "Nokia",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/vioiv/OneDrive/Escritorio/tablet.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/tienda/alta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"tienda",
+						"alta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cargar x CSV",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "csv",
+							"type": "file",
+							"src": "/C:/xampp/htdocs/slim/Tienda/app/archivos/archivo.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/tienda/altaCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"tienda",
+						"altaCSV"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Descargar x CSV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:666/tienda/descargaCSV",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"tienda",
+						"descargaCSV"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar dispositivo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "A8",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "Tablet",
+							"type": "text"
+						},
+						{
+							"key": "marca",
+							"value": "Samsung",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Venta alta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "A8",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "Tablet",
+							"type": "text"
+						},
+						{
+							"key": "marca",
+							"value": "Samsung",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "vioivan@hotmail.com",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/vioiv/OneDrive/Escritorio/tablet.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/ventas/alta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"ventas",
+						"alta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Venta alta Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "nombre",
+							"value": "1100",
+							"type": "text"
+						},
+						{
+							"key": "tipo",
+							"value": "Smartphone",
+							"type": "text"
+						},
+						{
+							"key": "marca",
+							"value": "Nokia",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "rober@hotmail.com",
+							"type": "text"
+						},
+						{
+							"key": "stock",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/vioiv/OneDrive/Escritorio/celular.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/ventas/alta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"ventas",
+						"alta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por fecha",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/productos/vendidos?fecha=2024-06-30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"productos",
+						"vendidos"
+					],
+					"query": [
+						{
+							"key": "fecha",
+							"value": "2024-06-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/ventas/porUsuario?email=vioivan@hotmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"ventas",
+						"porUsuario"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "vioivan@hotmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por tipo",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/ventas/porProducto?tipo=Smartphone",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"ventas",
+						"porProducto"
+					],
+					"query": [
+						{
+							"key": "tipo",
+							"value": "Smartphone"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por valores",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/productos/entreValores?valorUno=50000&valorDos=1000000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"productos",
+						"entreValores"
+					],
+					"query": [
+						{
+							"key": "valorUno",
+							"value": "50000"
+						},
+						{
+							"key": "valorDos",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por ingresos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/ventas/ingresos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"ventas",
+						"ingresos"
+					],
+					"query": [
+						{
+							"key": "fecha",
+							"value": "2024-06-30",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por mas vendido",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/consultar/productos/masVendidos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"consultar",
+						"productos",
+						"masVendidos"
+					],
+					"query": [
+						{
+							"key": "tipo",
+							"value": "Smartphone",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar venta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/ventas/modificar?id=14&email=graciela@hotmail.com&nombre=Celu viejo&tipo=Tablet&marca=Huawei&stock=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"ventas",
+						"modificar"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "14"
+						},
+						{
+							"key": "email",
+							"value": "graciela@hotmail.com"
+						},
+						{
+							"key": "nombre",
+							"value": "Celu viejo"
+						},
+						{
+							"key": "tipo",
+							"value": "Tablet"
+						},
+						{
+							"key": "marca",
+							"value": "Huawei"
+						},
+						{
+							"key": "stock",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "mail",
+							"value": "vioivan@hotmail.com",
+							"type": "text"
+						},
+						{
+							"key": "usuario",
+							"value": "ivan",
+							"type": "text"
+						},
+						{
+							"key": "contrasenia",
+							"value": "1234",
+							"type": "text"
+						},
+						{
+							"key": "perfil",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "foto",
+							"type": "file",
+							"src": "/C:/Users/vioiv/OneDrive/Escritorio/tablet.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/registro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"registro"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Registro",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "mail",
+									"value": "lucas@hotmail.com",
+									"type": "text"
+								},
+								{
+									"key": "usuario",
+									"value": "lucas",
+									"type": "text"
+								},
+								{
+									"key": "contrasenia",
+									"value": "12345",
+									"type": "text"
+								},
+								{
+									"key": "perfil",
+									"value": "empleado",
+									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/C:/Users/vioiv/OneDrive/Escritorio/tablet.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/registro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"registro"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Registro",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "mail",
+									"value": "rober@hotmail.com",
+									"type": "text"
+								},
+								{
+									"key": "usuario",
+									"value": "rober",
+									"type": "text"
+								},
+								{
+									"key": "contrasenia",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "perfil",
+									"value": "cliente",
+									"type": "text"
+								},
+								{
+									"key": "foto",
+									"type": "file",
+									"src": "/C:/Users/vioiv/OneDrive/Escritorio/tablet.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/registro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"registro"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "usuario",
+							"value": "ivan",
+							"type": "text"
+						},
+						{
+							"key": "contrasenia",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:666/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "lucas",
+									"type": "text"
+								},
+								{
+									"key": "contrasenia",
+									"value": "12345",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "usuario",
+									"value": "rober",
+									"type": "text"
+								},
+								{
+									"key": "contrasenia",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:666/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "666",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Descargar ventas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MjAyMjU0OTcsImV4cCI6MTcyMDI4NTQ5NywiYXVkIjoiNzliNTcyNTM3ZTkwNzA3Mzk0NTBkMzc2MTU5ODM4NTY0YzUwM2IzZSIsImRhdGEiOnsiaWQiOjMsIm1haWwiOiJ2aW9pdmFuQGhvdG1haWwuY29tIiwidXN1YXJpbyI6Iml2YW4iLCJjb250cmFzZW5pYSI6IjEyMzQiLCJwZXJmaWwiOiJhZG1pbiIsImZvdG8iOiIuXC9JbWFnZW5lc0RlVXN1YXJpb3NcLzIwMjRcL2l2YW5fYWRtaW5fMjAyNC0wNy0wNWpwZyIsImZlY2hhX2RlX2FsdGEiOiIyMDI0LTA3LTA1IiwiZmVjaGFfZGVfYmFqYSI6bnVsbH0sImFwcCI6IkNvbWFuZGEifQ.RUh8jfZZlVFLctNu25jST90zVxKiO8t0gMgK96cPZ6s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:666/ventas/descargar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"ventas",
+						"descargar"
+					],
+					"query": [
+						{
+							"key": "tipo",
+							"value": "Smartphone",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
